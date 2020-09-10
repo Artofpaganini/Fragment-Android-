@@ -6,26 +6,24 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FirstFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FirstFragment extends Fragment {
 
-    private EditText editText;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class FirstFragment extends Fragment implements TextWatcher, View.OnKeyListener {
+
+    private static final String TAG = "Fragment";
+    private EditText text;
+
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -33,15 +31,6 @@ public class FirstFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FirstFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FirstFragment newInstance(String param1, String param2) {
         FirstFragment fragment = new FirstFragment();
         Bundle args = new Bundle();
@@ -64,7 +53,66 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        View view = inflater.inflate(R.layout.fragment_first, container, false);
+        text = (EditText) view.findViewById(R.id.edit_text);
+        text.addTextChangedListener(this);
+        text.setOnKeyListener(this);
+
+        return view;
     }
 
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+
+            if (!checkStringFieldByZero()) {
+                Toast.makeText(getContext(), R.string.empty_field, Toast.LENGTH_SHORT).show();
+                return true;
+
+            } else if (checkStringFieldByZero()) {
+                Toast.makeText(getContext(), text.getText(), Toast.LENGTH_SHORT).show();
+                return true;
+
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * Check if value  has  some  entering letter  or not
+     *
+     * @return boolean
+     */
+    public boolean checkStringFieldByZero() {
+        Log.d(TAG, "Starting to check our field on filling");
+
+        if (text.getText().toString().matches("^\\s+$")) {
+            Log.e(TAG, "Too much spaces!!!");
+            return false;
+
+        } else if (!text.getText().toString().matches("^\\w+$")) {
+            Log.d(TAG, "Empty field");
+            return false;
+        }
+
+        Log.d(TAG, "Everything is fine!!");
+        return true;
+    }
 }
