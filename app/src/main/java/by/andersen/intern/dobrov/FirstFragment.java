@@ -30,6 +30,16 @@ public class FirstFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         text = (EditText) view.findViewById(R.id.edit_text);
 
+        createToastFromEditText();
+
+        return view;
+    }
+
+    /**
+     * Text Watcher method - realization
+     */
+    public void createToastFromEditText() {
+
         text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -53,9 +63,7 @@ public class FirstFragment extends Fragment {
                 }
             }
         });
-        return view;
     }
-
 
     /**
      * Check if value  has  some  entering letter  or not
