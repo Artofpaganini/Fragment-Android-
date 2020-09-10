@@ -2,5 +2,4 @@
     <string name="app_name">Fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="enter_text">Enter Text</string>
-    <string name="empty_field">Field is Empty</string>
 </resources>
