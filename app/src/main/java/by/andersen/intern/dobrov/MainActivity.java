@@ -6,15 +6,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * Первый Fragment. Добавление EditText и TextWatcher. Вывод введенного в EditText в Toast.
  */
 
-public class MainActivity extends FragmentActivity implements TextWatcher, View.OnClickListener {
+public class MainActivity extends FragmentActivity implements TextWatcher, TextView.OnKeyListener {
 
     private static final String TAG = "Fragment";
     private EditText showMeTheText;
@@ -26,7 +28,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
 
         showMeTheText = (EditText) findViewById(R.id.edit_text);
         showMeTheText.addTextChangedListener(this);
-        showMeTheText.setOnClickListener(this);
+        showMeTheText.setOnKeyListener(this);
 
     }
 
@@ -46,15 +48,21 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     }
 
     @Override
-    public void onClick(View view) {
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
 
-        if (!checkStringFieldByZero()) {
-            Toast.makeText(this, R.string.empty_field, Toast.LENGTH_SHORT).show();
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
 
-        } else if (checkStringFieldByZero()) {
-            Toast.makeText(this, showMeTheText.getText(), Toast.LENGTH_SHORT).show();
+            if (!checkStringFieldByZero()) {
+                Toast.makeText(this, R.string.empty_field, Toast.LENGTH_SHORT).show();
+                return true;
 
+            } else if (checkStringFieldByZero()) {
+                Toast.makeText(this, showMeTheText.getText(), Toast.LENGTH_SHORT).show();
+                return true;
+
+            }
         }
+        return false;
 
     }
 
@@ -78,6 +86,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         Log.d(TAG, "Everything is fine!!");
         return true;
     }
+
 }
 
 
